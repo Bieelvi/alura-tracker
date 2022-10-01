@@ -1,6 +1,6 @@
 <template>
   <section>
-    <strong>{{ tempoDecorrido }}</strong>
+    <strong class="cronometro">{{ tempoDecorrido }}</strong>
   </section>
 </template>
 
@@ -22,3 +22,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.cronometro {
+  color: var(--texto-primario);
+}
+</style>
