@@ -47,9 +47,7 @@ export default defineComponent({
       if (this.pausado) {
         this.pausar();
       } else {
-        this.iniciado = true;
-        console.log('iniciei');
-        
+        this.iniciado = true;        
         this.cronometro = setInterval(() => {
           if (!this.pausado) 
             this.tempoEmSegundos++;
@@ -57,15 +55,18 @@ export default defineComponent({
       }
     },
     finalizar() {
-      this.iniciado = false;
-      this.pausado = false;
       clearInterval(this.cronometro);
-      this.$emit("aoTemporizadorFinalizado", this.tempoEmSegundos);
-      this.tempoEmSegundos = 0;
+      this.$emit("aoTemporizadorFinalizado", this.tempoEmSegundos);      
+      this.reseta();
     },
     pausar() {
       this.pausado = !this.pausado;
     },
+    reseta() {
+      this.iniciado = false;
+      this.pausado = false;
+      this.tempoEmSegundos = 0;
+    }
   },
 });
 </script>
