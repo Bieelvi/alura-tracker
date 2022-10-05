@@ -1,6 +1,8 @@
 <template>
   <section>
-    <strong class="cronometro">{{ tempoDecorrido }}</strong>
+    <strong class="cronometro">
+      {{ pausado ? 'pausado' : tempoDecorrido }}
+    </strong>
   </section>
 </template>
 
@@ -13,6 +15,10 @@ export default defineComponent({
     tempoEmSegundos: {
       type: Number,
       default: 0,
+    },
+    pausado: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {

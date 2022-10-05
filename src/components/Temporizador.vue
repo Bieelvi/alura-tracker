@@ -1,11 +1,17 @@
 <template>
   <div class="is-flex is-align-items-center is-justify-content-space-between">
-    <Cronometro :tempoEmSegundos="tempoEmSegundos" />
+    <Cronometro :tempoEmSegundos="tempoEmSegundos" :pausado="pausado" />
     <Botao
+      v-if="pausado || !iniciado"
       @clicado="iniciar"
       :icone="'fas fa-play'"
       :nome="'play'"
-      :iniciado="iniciado"
+    />
+    <Botao
+      v-if="!pausado && iniciado"
+      @clicado="pausar"
+      :icone="'fas fa-pause'"
+      :nome="'pause'"
     />
     <Botao
       @clicado="finalizar"
@@ -33,20 +39,32 @@ export default defineComponent({
       tempoEmSegundos: 0,
       cronometro: 0,
       iniciado: false,
+      pausado: false,
     };
   },
   methods: {
     iniciar() {
-      this.iniciado = true;
-      this.cronometro = setInterval(() => {
-        this.tempoEmSegundos++;
-      }, 1000);
+      if (this.pausado) {
+        this.pausar();
+      } else {
+        this.iniciado = true;
+        console.log('iniciei');
+        
+        this.cronometro = setInterval(() => {
+          if (!this.pausado) 
+            this.tempoEmSegundos++;
+        }, 1000);
+      }
     },
     finalizar() {
       this.iniciado = false;
+      this.pausado = false;
       clearInterval(this.cronometro);
       this.$emit("aoTemporizadorFinalizado", this.tempoEmSegundos);
       this.tempoEmSegundos = 0;
+    },
+    pausar() {
+      this.pausado = !this.pausado;
     },
   },
 });
