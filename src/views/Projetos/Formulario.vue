@@ -15,8 +15,9 @@
   </form>
 </template>
 <script lang="ts">
-import { useStore } from "@/store";
 import { defineComponent } from "vue";
+import { useStore } from "@/store";
+import { ADICIONAR_PROJETO, ALTERAR_PROJETO } from "@/store/tipo-mutacoes";
 
 export default defineComponent({
   name: "Formulario",
@@ -40,13 +41,13 @@ export default defineComponent({
     salvar() {
       if (this.nomeProjeto === "")
         return;
-      if (this.id) {
-        this.store.commit('ALTERAR_PROJETO', {
+      if (this.id) {        
+        this.store.commit(ALTERAR_PROJETO, {
           id: this.id,
           nome: this.nomeProjeto
         });
       } else {
-        this.store.commit('ADICIONAR_PROJETO', this.nomeProjeto);
+        this.store.commit(ADICIONAR_PROJETO, this.nomeProjeto);
       }
 
       this.nomeProjeto = "";

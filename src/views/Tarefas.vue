@@ -38,3 +38,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.lista .cronometro {
+  color: #000;
+}
+</style>
