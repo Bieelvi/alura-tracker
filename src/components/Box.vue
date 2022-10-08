@@ -14,6 +14,6 @@ export default defineComponent({
 
 <style scoped>
 .box {
-  background: #faf0ca;
+  background: #cfb961;
 }
 </style>

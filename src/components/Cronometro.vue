@@ -1,7 +1,7 @@
 <template>
   <section>
     <strong class="cronometro">
-      {{ pausado ? 'pausado' : tempoDecorrido }}
+      <i class="far fa-clock"></i> {{ pausado ? 'pausado' : tempoDecorrido }}
     </strong>
   </section>
 </template>
@@ -29,7 +29,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .cronometro {
   color: var(--texto-primario);
 }
