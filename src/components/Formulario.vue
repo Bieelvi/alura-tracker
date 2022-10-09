@@ -35,7 +35,9 @@
 </template>
 
 <script lang="ts">
+import { INotificacao, TipoNotificacao } from "@/interfaces/INotificacao";
 import { key } from "@/store";
+import { NOTIFICAR } from "@/store/tipo-mutacoes";
 import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
 import Temporizador from "./Temporizador.vue";
@@ -54,6 +56,16 @@ export default defineComponent({
   },
   methods: {
     finalizarTarefa(tempoDecorrido: number): void {
+      if (!this.idProjeto) {
+        this.store.commit(NOTIFICAR, {
+          titulo: 'Falha',
+          texto: 'É necessário vincular alguem projeto a tarefa',
+          tipo: TipoNotificacao.FALHA
+        } as INotificacao);
+        
+        return;
+      }
+
       this.$emit("aoSalvarTarefa", {
         duracaoEmSegundos: tempoDecorrido,
         descricao: this.descricaoTarefa,
@@ -66,6 +78,7 @@ export default defineComponent({
     const store = useStore(key);
     return {
       projetos: computed(() => store.state.projetos),
+      store
     };
   },
 });

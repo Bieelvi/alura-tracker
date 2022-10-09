@@ -34,8 +34,9 @@
   </table>
 </template>
   <script lang="ts">
+import { INotificacao, TipoNotificacao } from "@/interfaces/INotificacao";
 import { useStore } from "@/store";
-import { EXCLUIR_PROJETO } from "@/store/tipo-mutacoes";
+import { EXCLUIR_PROJETO, NOTIFICAR } from "@/store/tipo-mutacoes";
 import { computed, defineComponent } from "vue";
 
 export default defineComponent({
@@ -46,9 +47,15 @@ export default defineComponent({
     };
   },
   methods: {
-    excluir(idProjeto: string){
-      this.store.commit(EXCLUIR_PROJETO, idProjeto);      
-    }
+    excluir(idProjeto: string) {
+      this.store.commit(EXCLUIR_PROJETO, idProjeto as string);
+
+      this.store.commit(NOTIFICAR, {
+        titulo: 'Sucesso',
+        texto: 'Projeto excluido com sucesso!',
+        tipo: TipoNotificacao.SUCESSO
+      } as INotificacao);
+    },
   },
   setup() {
     const store = useStore();
