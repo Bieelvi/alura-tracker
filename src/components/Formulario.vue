@@ -16,7 +16,7 @@
       <div class="column is-3">
         <div class="select">
           <select v-model="idProjeto">
-            <option value="" disabled selected>Selecione um projeto</option>
+            <option value="" selected>Selecione um projeto</option>
             <option
               :value="projeto.id"
               v-for="projeto in projetos"
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="column">
-        <Temporizador @aoTemporizadorFinalizado="finalizarTarefa" />
+        <Temporizador @aoTemporizadorFinalizado="finalizarTarefa" :liberado="liberado"/>
       </div>
     </div>
   </div>
@@ -51,7 +51,8 @@ export default defineComponent({
   data() {
     return {
       descricaoTarefa: "",
-      idProjeto: ''
+      idProjeto: '',
+      liberado: false,
     };
   },
   methods: {
@@ -62,7 +63,9 @@ export default defineComponent({
           texto: 'É necessário vincular alguem projeto a tarefa',
           tipo: TipoNotificacao.FALHA
         } as INotificacao);
-        
+
+        this.liberado = false;
+
         return;
       }
 
@@ -72,6 +75,11 @@ export default defineComponent({
         projeto: this.projetos.find(proj => proj.id == this.idProjeto),
       });
       this.descricaoTarefa = "";
+      this.liberado = true;      
+
+      setTimeout(() => {
+        this.liberado = false;
+      }, 1000);
     },
   },
   setup() {

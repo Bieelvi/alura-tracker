@@ -34,6 +34,12 @@ export default defineComponent({
     Cronometro,
     Botao,
   },
+  props: {
+    liberado: {
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     return {
       tempoEmSegundos: 0,
@@ -41,6 +47,12 @@ export default defineComponent({
       iniciado: false,
       pausado: false,
     };
+  },
+  watch: {
+    liberado() {
+      if (this.liberado)
+        this.reseta();       
+    }    
   },
   methods: {
     iniciar() {
@@ -55,7 +67,6 @@ export default defineComponent({
     },
     finalizar() {
       this.$emit("aoTemporizadorFinalizado", this.tempoEmSegundos);
-      this.reseta();
     },
     pausar() {
       this.pausado = !this.pausado;

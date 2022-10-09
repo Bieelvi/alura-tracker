@@ -12,19 +12,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
-import {
-  ADICIONAR_PROJETO,
-  ALTERAR_PROJETO,
-  NOTIFICAR,
-} from "@/store/tipo-mutacoes";
-import { INotificacao, TipoNotificacao } from "@/interfaces/INotificacao";
+import { ADICIONAR_PROJETO, ALTERAR_PROJETO } from "@/store/tipo-mutacoes";
+import { TipoNotificacao } from "@/interfaces/INotificacao";
 import IProjeto from "@/interfaces/IProjeto";
+import useNotificar from "@/hooks/notificar"
 
 export default defineComponent({
   name: "Formulario",
   props: {
     id: {
       type: String,
+      default: "",
     },
   },
   mounted() {
@@ -43,11 +41,11 @@ export default defineComponent({
   methods: {
     salvar() {
       if (this.nomeProjeto === "") {
-        this.store.commit(NOTIFICAR, {
-          titulo: "Atenção",
-          texto: "É necessário o projeto ter nome",
-          tipo: TipoNotificacao.ATENCAO,
-        } as INotificacao);
+        this.notificar(
+          TipoNotificacao.ATENCAO,
+          "Atenção",
+          "É necessário o projeto ter nome!"
+        );
         return;
       }
       if (this.id) {
@@ -56,19 +54,19 @@ export default defineComponent({
           nome: this.nomeProjeto,
         } as IProjeto);
 
-        this.store.commit(NOTIFICAR, {
-          titulo: "Sucesso",
-          texto: "Projeto alterado com sucesso!",
-          tipo: TipoNotificacao.SUCESSO,
-        } as INotificacao);
+        this.notificar(
+          TipoNotificacao.SUCESSO,
+          "Sucesso",
+          "Projeto alterado com sucesso!"
+        );
       } else {
         this.store.commit(ADICIONAR_PROJETO, this.nomeProjeto as string);
 
-        this.store.commit(NOTIFICAR, {
-          titulo: "Sucesso",
-          texto: "Projeto criado com sucesso!",
-          tipo: TipoNotificacao.SUCESSO,
-        } as INotificacao);
+        this.notificar(
+          TipoNotificacao.SUCESSO,
+          "Sucesso",
+          "Projeto criado com sucesso!"
+        );
       }
 
       this.nomeProjeto = "";
@@ -77,7 +75,8 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    return { store };
+    const { notificar } = useNotificar();
+    return { store, notificar };
   },
 });
 </script>
